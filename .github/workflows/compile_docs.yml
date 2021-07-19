@@ -33,12 +33,12 @@ jobs:
             !${{ env.pythonLocation }}/bin/pip*
             !${{ env.pythonLocation }}/lib/python*/site-packages/pip*
             !${{ env.pythonLocation }}/lib/python*/site-packages/setuptools*
-          key: ${{ env.pythonLocation }}-${{ hashFiles('docs/requirements.txt') }}
+          key: ${{ env.pythonLocation }}-${{ hashFiles('source/requirements.txt') }}
       - name: Install Doxygen and Latex dependencies
         run: sudo apt-get install doxygen texlive-xetex texlive-binaries texlive-lang-english latexmk fonts-freefont-otf
       - name: Install requirements
         run: |
-          pip install -r docs/requirements.txt
+          pip install -r source/requirements.txt
       - name: Setup Emscripten cache
         id: cache-system-libraries
         uses: actions/cache@v2
@@ -57,8 +57,8 @@ jobs:
               scripts/build_html_examples.sh
       - name: Build docs
         run: |
-              chmod 777 docs/build.py
-              docs/build.py
+              chmod 777 source/build.py
+              source/build.py
       - name: Remove .doctrees
         run: ls -l && rm -rf out_html/.doctrees
       - name: Retrieve version
@@ -66,7 +66,7 @@ jobs:
           ls -l
           ls -l emsdk-cache
           ls -l docs
-          ls -l docs/out_html
+          ls -l source/out_html
           echo "::set-output name=VERSION_NAME::$(scripts/find_version.sh)"
         id: version
       #- name: Deploy
